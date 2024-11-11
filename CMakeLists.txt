@@ -6,6 +6,12 @@ project(RadianceCascades CXX)
 
 add_subdirectory(vendored/SDL EXCLUDE_FROM_ALL)
 
-add_executable(RadianceCascades WIN32 src/main.cpp)
+add_executable(RadianceCascades src/main.cpp)
+
+add_custom_command(
+    TARGET RadianceCascades POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E copy $<TARGET_FILE:SDL3::SDL3-shared> $<TARGET_FILE_DIR:RadianceCascades>
+    VERBATIM
+)
 
 target_link_libraries(RadianceCascades PRIVATE SDL3::SDL3)
