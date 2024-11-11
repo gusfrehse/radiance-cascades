@@ -1,6 +1,10 @@
+#include "SDL3/SDL_error.h"
+#include "SDL3/SDL_video.h"
 #include <iostream>
 #include <SDL3/SDL.h>
 #include <SDL3/SDL_main.h>
+#include <glbinding/gl/gl.h>
+#include <glbinding/glbinding.h>
 
 int main(int argc, char **argv) {
     if (!SDL_Init(SDL_INIT_VIDEO)) {
@@ -15,10 +19,18 @@ int main(int argc, char **argv) {
 
     SDL_Window *window = SDL_CreateWindow("Radiance Cascades", 1280, 720, SDL_WINDOW_OPENGL);
 
-    if (window == nullptr) {
-        std::cout << "Couldn't create window." << std::endl;
+    if (!window) {
+        std::cout << "Couldn't create window: " << SDL_GetError() << std::endl;
         std::exit(1);
     }
+
+    SDL_GLContext context = SDL_GL_CreateContext(window);
+    if (!context) {
+        std::cout << "Couldn't create OpenGL context: " << SDL_GetError() << std::endl;
+        std::exit(1);
+    }
+
+    glbinding::initialize(SDL_GL_GetProcAddress);
 
     bool shouldQuit = false;
     while (!shouldQuit) {
@@ -28,7 +40,6 @@ int main(int argc, char **argv) {
                 shouldQuit = true;
             }
         }
-
     }
 
     return 0;

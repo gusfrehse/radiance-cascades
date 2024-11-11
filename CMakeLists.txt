@@ -6,6 +6,10 @@ project(RadianceCascades CXX)
 
 add_subdirectory(vendored/SDL EXCLUDE_FROM_ALL)
 
+set(CMAKE_PREFIX_PATH "./vendored/glbinding;${CMAKE_PREFIX_PATH}")
+
+find_package(glbinding REQUIRED)
+
 add_executable(RadianceCascades src/main.cpp)
 
 add_custom_command(
@@ -14,4 +18,14 @@ add_custom_command(
     VERBATIM
 )
 
-target_link_libraries(RadianceCascades PRIVATE SDL3::SDL3)
+add_custom_command(
+    TARGET RadianceCascades POST_BUILD
+    COMMAND "${CMAKE_COMMAND}" -E copy $<TARGET_FILE:glbinding::glbinding> $<TARGET_FILE_DIR:RadianceCascades>
+    VERBATIM
+)
+
+target_link_libraries(RadianceCascades
+                      PRIVATE
+                      glbinding::glbinding
+                      glbinding::glbinding-aux
+                      SDL3::SDL3)
