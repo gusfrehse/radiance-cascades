@@ -21,6 +21,7 @@ add_custom_command(
 add_custom_command(
     TARGET RadianceCascades POST_BUILD
     COMMAND "${CMAKE_COMMAND}" -E copy $<TARGET_FILE:glbinding::glbinding> $<TARGET_FILE_DIR:RadianceCascades>
+    COMMAND "${CMAKE_COMMAND}" -E copy $<TARGET_FILE:glbinding::glbinding-aux> $<TARGET_FILE_DIR:RadianceCascades>
     VERBATIM
 )
 
