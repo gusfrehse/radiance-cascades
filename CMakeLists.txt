@@ -10,7 +10,10 @@ set(CMAKE_PREFIX_PATH "./vendored/glbinding;${CMAKE_PREFIX_PATH}")
 
 find_package(glbinding REQUIRED)
 
-add_executable(RadianceCascades src/main.cpp)
+add_executable(RadianceCascades
+               src/main.cpp
+               src/shaders.cpp
+               src/shaders.hpp)
 
 add_custom_command(
     TARGET RadianceCascades POST_BUILD
