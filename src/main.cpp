@@ -55,18 +55,19 @@ int main(int argc, char **argv) {
   gl::glCreateVertexArrays(1, &vao);
   gl::glBindVertexArray(vao);
 
-  // gl::GLuint framebuffers[4];
-  // gl::glGenFramebuffers(4, framebuffers);
+  gl::GLuint framebuffers[4];
+  gl::glCreateFramebuffers(4, framebuffers);
 
-  // gl::GLuint textures[4];
-  // gl::glCreateTextures(gl::GL_TEXTURE_2D, 4, textures);
+  gl::GLuint textures[4];
+  gl::glCreateTextures(gl::GL_TEXTURE_2D, 4, textures);
 
   // TODO: giving invalid operation
-  // for (int i = 0; i < 4; i++) {
-  //   gl::glTextureStorage2D(textures[i], 1, gl::GLenum::GL_RGBA8, width, height);
-  //   gl::glNamedFramebufferTexture(framebuffers[i], gl::GL_COLOR_ATTACHMENT0,
-  //                                 textures[i], 0);
-  // }
+  for (int i = 0; i < 4; i++) {
+    gl::glTextureStorage2D(textures[i], 1, gl::GL_RGBA8, width, height);
+    gl::glClearTexImage(textures[i], 1, gl::GL_RGBA, gl::GLenum::GL_FLOAT, NULL);
+    gl::glNamedFramebufferTexture(framebuffers[i], gl::GL_COLOR_ATTACHMENT0,
+                                  textures[i], 0);
+  }
 
   gl::glClearColor(0.4f, 0.5f, 0.2f, 1.0f);
 
