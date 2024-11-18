@@ -8,25 +8,31 @@ uniform int u_step;
 
 void main() {
     float best_dist = 99999999.9;
-    vec2 best_coord = vec2(0.0);
-    float offset = exp2(float(-u_step)); // this may be wrong
+    vec2 best_seed = vec2(0.0);
+    float offset = exp2(float(-u_step / 2.0)); // this may be wrong
 
-    for (int x = -1; x <= 1; x++) {
-        for (int y = -1; y <= 1; y++) {
-            vec2 pos = v_uv + vec2(x * offset, y * offset);
-            vec2 data = texture(s_input, pos).xy;
+    bool exit = false;
+    float found = 0.0;
 
-            if (data == vec2(0.)) {
+    for (int x = -1; x <= 1 && !exit; x++) {
+        for (int y = -1; y <= 1 && !exit; y++) {
+            vec2 pos = 0.5 + v_uv + vec2(x * offset, y * offset);
+            vec4 data = texture(s_input, pos);
+
+            if (data.w == 0.0) {
                 continue;
             }
 
-            float dist = distance(v_uv, data);
+            vec2 closest_seed = data.xy;
+
+            float dist = distance(v_uv, closest_seed);
             if (dist < best_dist) {
                 best_dist = dist;
-                best_coord = pos;
+                best_seed = closest_seed;
+                found = 1.0;
             }
         }
     }
 
-    frag_color = vec4(best_coord, best_dist, 1.0);
+    frag_color = vec4(best_seed, 0.0, found);
 }
