@@ -32,6 +32,8 @@ void jfa_pass(
 void jfa(gl::GLuint &input_texture, gl::GLuint &output_texture, gl::GLuint framebuffer, gl::GLuint program) {
   gl::glUseProgram(program);
   gl::GLint step_location = gl::glGetUniformLocation(program, "u_step");
+  gl::GLint pixel_size_location = gl::glGetUniformLocation(program, "u_pixel_size");
+  //gl::glUniform2f(pixel_size_location, 1.0f / width, 1.0f / height);
   gl::glBindFramebuffer(gl::GL_FRAMEBUFFER, framebuffer);
   for (int i = 0, max_steps = std::log2(std::max(width, height)); i < 17; i++) {
     jfa_pass(input_texture, output_texture, framebuffer, step_location, i);
@@ -110,7 +112,8 @@ int main(int argc, char **argv)
   float *data0 = new float[width * height * 4];
   for (int x = 0; x < width; x++) {
     for (int y = 0; y < height; y++) {
-      if (x == width / 2 && y == height / 2) {
+      if ((2123 * x  + 343 * y + 123) % ((width * height) / 54) == 0) {
+        // if (x < width / 2 && y > height / 2) {
         int curr = (y * width + x);
         data0[4 * curr + 0] = float(x) / float(width);
         data0[4 * curr + 1] = float(y) / float(height);
