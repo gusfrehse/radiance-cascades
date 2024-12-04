@@ -137,6 +137,8 @@ int main(int argc, char **argv)
       if (e.type == SDL_EVENT_QUIT)
       {
         shouldQuit = true;
+      } else if (e.type == SDL_EVENT_MOUSE) {
+        
       }
     }
 
