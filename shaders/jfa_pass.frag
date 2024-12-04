@@ -37,7 +37,5 @@ void main() {
         }
     }
 
-    //frag_color = vec4(best_seed, 0.0, found);
-    frag_color = vec4(0.0, 0.0, best_dist, found);
-    //frag_color = vec4(v_uv, 0.0, found);
+    frag_color = vec4(best_seed, best_dist, found);
 }
